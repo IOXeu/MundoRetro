@@ -13,6 +13,7 @@ import {
   retro50sPaper,
   RETRO_IMAGE_GALLERY
 } from '../data/retroArchive';
+import { COMMERCIAL_NICHE_TEMPLATES } from '../data/commercialTemplates';
 import { toPng } from 'html-to-image';
 import confetti from 'canvas-confetti';
 import {
@@ -36,11 +37,49 @@ import {
   Undo2,
   Layout,
   Filter,
-  Check
+  Check,
+  Crown,
+  DollarSign,
+  Store,
+  ChevronDown
 } from 'lucide-react';
 
-export const InteractiveCanvasEditor: React.FC = () => {
+interface InteractiveCanvasEditorProps {
+  isProUser?: boolean;
+  onOpenPricingModal?: () => void;
+  initialNicheId?: string | null;
+}
+
+export const InteractiveCanvasEditor: React.FC<InteractiveCanvasEditorProps> = ({
+  isProUser = false,
+  onOpenPricingModal,
+  initialNicheId = null
+}) => {
   const canvasRef = useRef<HTMLDivElement | null>(null);
+  const [showNicheMenu, setShowNicheMenu] = useState<boolean>(false);
+
+  // Auto-load template if provided via props
+  React.useEffect(() => {
+    if (initialNicheId && COMMERCIAL_NICHE_TEMPLATES[initialNicheId]) {
+      const template = COMMERCIAL_NICHE_TEMPLATES[initialNicheId];
+      setLayers(template.layers);
+      setSelectedBg(template.bgType);
+      setSelectedBorder(template.border);
+      setSelectedLayerId(template.layers[0]?.id || null);
+    }
+  }, [initialNicheId]);
+
+  const handleLoadNicheTemplate = (nicheId: string) => {
+    const template = COMMERCIAL_NICHE_TEMPLATES[nicheId];
+    if (template) {
+      setLayers(template.layers);
+      setSelectedBg(template.bgType);
+      setSelectedBorder(template.border);
+      setSelectedLayerId(template.layers[0]?.id || null);
+      setShowNicheMenu(false);
+      confetti({ particleCount: 35, spread: 60, origin: { y: 0.7 } });
+    }
+  };
 
   // Canvas Format: stories (9:16), feed (1:1), horizontal (4:3)
   const [format, setFormat] = useState<AdFormat>('stories');
@@ -396,18 +435,24 @@ export const InteractiveCanvasEditor: React.FC = () => {
     setSelectedBg('sunburst');
   };
 
-  // Export PNG in High Definition
-  const handleExportPNG = async () => {
+  // Export PNG in High Definition or Ultra Pro
+  const handleExport = async (isProExport: boolean) => {
+    if (isProExport && !isProUser) {
+      onOpenPricingModal?.();
+      return;
+    }
     if (!canvasRef.current) return;
     setIsExporting(true);
     try {
       const dataUrl = await toPng(canvasRef.current, {
         cacheBust: true,
         quality: 0.98,
-        pixelRatio: 2.5
+        pixelRatio: isProExport ? 3.5 : 2.0
       });
       const link = document.createElement('a');
-      link.download = `cartaz-cenario-retro-${Date.now()}.png`;
+      link.download = isProExport
+        ? `cartaz-comercial-pro-4k-${Date.now()}.png`
+        : `amostra-cartaz-retro-${Date.now()}.png`;
       link.href = dataUrl;
       link.click();
       confetti({
@@ -439,35 +484,95 @@ export const InteractiveCanvasEditor: React.FC = () => {
             <h1 className="font-playfair text-2xl font-black text-[#faf6ee]">
               Cenógrafo Retrô Anos 50 e 60
             </h1>
-            <span className="rounded bg-amber-500/20 px-2 py-0.5 font-mono text-xs font-bold text-amber-400">
-              Setas · Molduras · Fundos · Selos
-            </span>
+            {isProUser ? (
+              <span className="rounded bg-emerald-500/20 px-2 py-0.5 font-mono text-xs font-bold text-emerald-400 border border-emerald-500/30 flex items-center gap-1">
+                <Crown className="h-3 w-3" />
+                <span>Licença Pro Ativa</span>
+              </span>
+            ) : (
+              <button
+                onClick={onOpenPricingModal}
+                className="rounded bg-amber-500/20 px-2 py-0.5 font-mono text-xs font-bold text-amber-400 hover:bg-amber-500/30 transition-colors flex items-center gap-1 border border-amber-500/40 cursor-pointer"
+              >
+                <Sparkles className="h-3 w-3" />
+                <span>Versão Grátis · Obter Pro</span>
+              </button>
+            )}
           </div>
           <p className="text-xs text-[#a89d8d]">
-            Coloque a foto real do seu produto. Os itens retrô (setas, molduras, fundos e selos) completam o cenário de época!
+            Crie anúncios de alta conversão para comércios locais (hamburguerias, barbearias, cafés). Arraste fotos, selos e setas!
           </p>
         </div>
 
         {/* Quick Format & Template Controls */}
         <div className="flex flex-wrap items-center gap-2">
-          <button
-            onClick={() => {
-              setLayers(MICROFOODBR_DEFAULT_LAYERS);
-              setSelectedBg('aged-poster');
-              setSelectedLayerId('layer-seal');
-            }}
-            className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#2b251e] border border-[#4d4132] text-xs font-medium text-[#cfa643] hover:bg-[#383025] transition-colors"
-          >
-            <Sparkles className="h-3.5 w-3.5" />
-            <span>Modelo MicroFoodBr</span>
-          </button>
+          {/* Commercial Niche Templates Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setShowNicheMenu(!showNicheMenu)}
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#cfa643] text-xs font-bold text-[#121110] hover:bg-[#e0b654] transition-colors shadow-sm"
+            >
+              <Store className="h-3.5 w-3.5" />
+              <span>Modelos de Negócios</span>
+              <ChevronDown className="h-3 w-3" />
+            </button>
+
+            {showNicheMenu && (
+              <div className="absolute left-0 mt-2 w-64 rounded-xl border border-[#3b3428] bg-[#1a1714] p-2 shadow-2xl z-50 space-y-1">
+                <div className="px-2 py-1 text-[10px] font-bold text-[#a89d8d] uppercase tracking-wider">
+                  Carregar Nicho Comercial:
+                </div>
+                <button
+                  onClick={() => handleLoadNicheTemplate('niche-burger')}
+                  className="w-full text-left px-2.5 py-1.5 rounded text-xs font-medium text-[#f0e6d6] hover:bg-[#272118] hover:text-[#cfa643] flex items-center justify-between"
+                >
+                  <span>🍔 Hamburgueria & Diner</span>
+                  <span className="text-[10px] text-emerald-400 font-bold">1955</span>
+                </button>
+                <button
+                  onClick={() => handleLoadNicheTemplate('niche-barber')}
+                  className="w-full text-left px-2.5 py-1.5 rounded text-xs font-medium text-[#f0e6d6] hover:bg-[#272118] hover:text-[#cfa643] flex items-center justify-between"
+                >
+                  <span>💈 Barbearia & Cutelaria</span>
+                  <span className="text-[10px] text-emerald-400 font-bold">Vintage</span>
+                </button>
+                <button
+                  onClick={() => handleLoadNicheTemplate('niche-coffee')}
+                  className="w-full text-left px-2.5 py-1.5 rounded text-xs font-medium text-[#f0e6d6] hover:bg-[#272118] hover:text-[#cfa643] flex items-center justify-between"
+                >
+                  <span>☕ Cafeteria & Torrefação</span>
+                  <span className="text-[10px] text-emerald-400 font-bold">Família</span>
+                </button>
+                <button
+                  onClick={() => handleLoadNicheTemplate('niche-garage')}
+                  className="w-full text-left px-2.5 py-1.5 rounded text-xs font-medium text-[#f0e6d6] hover:bg-[#272118] hover:text-[#cfa643] flex items-center justify-between"
+                >
+                  <span>🚗 Oficina & Clássicos</span>
+                  <span className="text-[10px] text-emerald-400 font-bold">V8</span>
+                </button>
+                <div className="border-t border-[#2d2822] pt-1">
+                  <button
+                    onClick={() => {
+                      setLayers(MICROFOODBR_DEFAULT_LAYERS);
+                      setSelectedBg('aged-poster');
+                      setSelectedLayerId('layer-seal');
+                      setShowNicheMenu(false);
+                    }}
+                    className="w-full text-left px-2.5 py-1.5 rounded text-xs text-[#a89d8d] hover:bg-[#272118] hover:text-[#f0e6d6]"
+                  >
+                    ✦ Modelo Padrão MicroFoodBr
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           <button
             onClick={handleResetBlankCanvas}
             className="flex items-center gap-1.5 px-3 py-1.5 rounded bg-[#241f19] border border-[#3b3327] text-xs font-medium text-[#ded5c6] hover:bg-[#302920] transition-colors"
           >
             <Undo2 className="h-3.5 w-3.5" />
-            <span>Cenário Limpo</span>
+            <span>Limpar</span>
           </button>
 
           {/* Format selection */}
@@ -490,14 +595,25 @@ export const InteractiveCanvasEditor: React.FC = () => {
             </button>
           </div>
 
-          {/* Export PNG */}
+          {/* Export Free Sample */}
           <button
-            onClick={handleExportPNG}
+            onClick={() => handleExport(false)}
             disabled={isExporting}
-            className="flex items-center gap-2 rounded-lg bg-[#b83227] px-4 py-2 text-xs font-bold text-white shadow-md hover:bg-[#d63a2c] transition-all disabled:opacity-50"
+            className="flex items-center gap-1.5 rounded-lg bg-[#272118] border border-[#3b3327] px-3 py-2 text-xs font-bold text-[#ded5c6] hover:bg-[#332a1f] transition-all disabled:opacity-50"
+            title="Baixar com marca d'água de amostra"
           >
-            <Download className="h-4 w-4" />
-            <span>{isExporting ? 'Renderizando...' : 'Baixar Cartaz (PNG)'}</span>
+            <Download className="h-3.5 w-3.5" />
+            <span>Amostra</span>
+          </button>
+
+          {/* Export Commercial Pro 4K */}
+          <button
+            onClick={() => handleExport(true)}
+            disabled={isExporting}
+            className="flex items-center gap-2 rounded-lg bg-gradient-to-r from-[#b83227] to-[#d63a2c] px-4 py-2 text-xs font-bold text-white shadow-md hover:brightness-110 transition-all disabled:opacity-50"
+          >
+            <Crown className="h-4 w-4" />
+            <span>{isExporting ? 'Exportando...' : isProUser ? 'Baixar Pro 4K' : 'Exportar Pro (Sem Marca)'}</span>
           </button>
         </div>
       </div>
@@ -933,6 +1049,20 @@ export const InteractiveCanvasEditor: React.FC = () => {
                     </div>
                   );
                 })}
+
+              {/* Watermark for Free Tier */}
+              {!isProUser && (
+                <div className="absolute inset-0 pointer-events-none z-40 flex items-center justify-center">
+                  <div className="rotate-[-25deg] select-none text-center opacity-30 border-4 border-dashed border-[#1a1714] px-6 py-2.5 rounded-xl bg-white/40 backdrop-blur-[0.5px] shadow-lg">
+                    <span className="font-playfair text-lg sm:text-2xl font-black uppercase tracking-widest text-[#1a1714] block">
+                      Amostra · Mundo Retrô
+                    </span>
+                    <span className="text-[9px] sm:text-[10px] font-sans font-bold text-[#1a1714] tracking-wide block">
+                      Desbloqueie o Pro para Exportar sem Marca d'Água
+                    </span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
 
