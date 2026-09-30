@@ -407,5 +407,191 @@ export const COMMERCIAL_NICHE_TEMPLATES: Record<string, CommercialNicheTemplate>
         }
       }
     ]
+  },
+  'niche-beer': {
+    id: 'niche-beer',
+    name: 'Cervejaria Artesanal & Pub',
+    category: 'Cervejas & Pubs',
+    bgType: 'aged-poster',
+    border: 'double-vintage',
+    layers: [
+      {
+        id: 'layer-beer-kicker',
+        type: 'headline',
+        name: 'Kicker Pureza',
+        x: 50,
+        y: 11,
+        scale: 0.95,
+        rotation: 0,
+        zIndex: 20,
+        visible: true,
+        content: {
+          text: 'FABRICADO SEGUNDO A LEI DA PUREZA DE 1516',
+          color: '#2a1a08',
+          fontFamily: 'font-outfit'
+        }
+      },
+      {
+        id: 'layer-beer-title',
+        type: 'headline',
+        name: 'Título Cerveja',
+        x: 50,
+        y: 20,
+        scale: 1.15,
+        rotation: 0,
+        zIndex: 25,
+        visible: true,
+        content: {
+          text: 'Chopp Pilsen & IPA Extra Gelado!',
+          subtext: 'Lúpulos nobres selecionados, espuma cremosa e refrescância inigualável',
+          color: '#8c2d19',
+          fontFamily: 'font-satisfy'
+        }
+      },
+      {
+        id: 'layer-beer-img',
+        type: 'product_image',
+        name: 'Caneca & Garrafa Retrô',
+        x: 50,
+        y: 50,
+        scale: 1.2,
+        rotation: 0,
+        zIndex: 15,
+        visible: true,
+        content: {
+          imageUrl: retroCleanserCan,
+          text: 'Cerveja Artesanal de Barril',
+          filterMode: 'litho'
+        }
+      },
+      {
+        id: 'layer-beer-seal',
+        type: 'value_seal',
+        name: 'Selo Happy Hour',
+        x: 26,
+        y: 42,
+        scale: 1.1,
+        rotation: -10,
+        zIndex: 30,
+        visible: true,
+        content: {
+          text: 'HAPPY HOUR',
+          subtext: 'CHOPP EM DOBRO',
+          color: '#8c2d19',
+          accentColor: '#ffffff',
+          shapeStyle: 'starburst-12'
+        }
+      },
+      {
+        id: 'layer-beer-badge',
+        type: 'cta_banner',
+        name: 'Rodapé Cervejaria',
+        x: 50,
+        y: 84,
+        scale: 1.05,
+        rotation: 0,
+        zIndex: 22,
+        visible: true,
+        content: {
+          text: 'SEXTA & SÁBADO COM MÚSICA AO VIVO E ROCK CLÁSSICO',
+          subtext: 'Abra sua comanda e aproveite as melhores torneiras da região',
+          color: '#2a1a08',
+          accentColor: '#eed7a1'
+        }
+      }
+    ]
+  },
+  'niche-fashion': {
+    id: 'niche-fashion',
+    name: 'Brechó, Boutique & Moda Vintage',
+    category: 'Moda & Alfaiataria',
+    bgType: 'kraft-paper',
+    border: 'coupon-dash',
+    layers: [
+      {
+        id: 'layer-fashion-kicker',
+        type: 'headline',
+        name: 'Kicker Moda',
+        x: 50,
+        y: 11,
+        scale: 0.95,
+        rotation: 0,
+        zIndex: 20,
+        visible: true,
+        content: {
+          text: 'ALFAIATARIA FINA & MODA SUSTENTÁVEL EXCLUSIVA',
+          color: '#341f18',
+          fontFamily: 'font-cinzel'
+        }
+      },
+      {
+        id: 'layer-fashion-title',
+        type: 'headline',
+        name: 'Título Elegância',
+        x: 50,
+        y: 20,
+        scale: 1.1,
+        rotation: 0,
+        zIndex: 25,
+        visible: true,
+        content: {
+          text: 'A Elegância Incomparável da Época de Ouro',
+          subtext: 'Garimpos selecionados peça a peça com tecidos nobres e cortes sob medida',
+          color: '#822415',
+          fontFamily: 'font-playfair'
+        }
+      },
+      {
+        id: 'layer-fashion-img',
+        type: 'product_image',
+        name: 'Modelo Retrô Anos 50',
+        x: 50,
+        y: 50,
+        scale: 1.25,
+        rotation: 0,
+        zIndex: 15,
+        visible: true,
+        content: {
+          imageUrl: retroWomanPointing,
+          text: 'Moda Vintage & Alta Costura',
+          filterMode: 'litho'
+        }
+      },
+      {
+        id: 'layer-fashion-seal',
+        type: 'value_seal',
+        name: 'Selo Novidade',
+        x: 27,
+        y: 38,
+        scale: 1.05,
+        rotation: 6,
+        zIndex: 30,
+        visible: true,
+        content: {
+          text: 'NOVA COLEÇÃO',
+          subtext: 'PEÇAS RARAS',
+          color: '#822415',
+          accentColor: '#ffffff',
+          shapeStyle: 'circle-seal'
+        }
+      },
+      {
+        id: 'layer-fashion-badge',
+        type: 'cta_banner',
+        name: 'Rodapé Brechó',
+        x: 50,
+        y: 84,
+        scale: 1,
+        rotation: 0,
+        zIndex: 22,
+        visible: true,
+        content: {
+          text: 'VISITE NOSSO ESPAÇO E ENCONTRE SUA PEÇA ÚNICA',
+          subtext: 'Atendimento com hora marcada e café cortesia',
+          color: '#341f18',
+          accentColor: '#eed7a1'
+        }
+      }
+    ]
   }
 };

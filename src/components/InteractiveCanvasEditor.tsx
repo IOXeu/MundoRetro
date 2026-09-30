@@ -544,6 +544,20 @@ export const InteractiveCanvasEditor: React.FC<InteractiveCanvasEditorProps> = (
                   <span className="text-[10px] text-emerald-400 font-bold">Família</span>
                 </button>
                 <button
+                  onClick={() => handleLoadNicheTemplate('niche-beer')}
+                  className="w-full text-left px-2.5 py-1.5 rounded text-xs font-medium text-[#f0e6d6] hover:bg-[#272118] hover:text-[#cfa643] flex items-center justify-between"
+                >
+                  <span>🍺 Cervejaria & Pub</span>
+                  <span className="text-[10px] text-emerald-400 font-bold">Chopp</span>
+                </button>
+                <button
+                  onClick={() => handleLoadNicheTemplate('niche-fashion')}
+                  className="w-full text-left px-2.5 py-1.5 rounded text-xs font-medium text-[#f0e6d6] hover:bg-[#272118] hover:text-[#cfa643] flex items-center justify-between"
+                >
+                  <span>👗 Brechó & Moda Retrô</span>
+                  <span className="text-[10px] text-emerald-400 font-bold">Vintage</span>
+                </button>
+                <button
                   onClick={() => handleLoadNicheTemplate('niche-garage')}
                   className="w-full text-left px-2.5 py-1.5 rounded text-xs font-medium text-[#f0e6d6] hover:bg-[#272118] hover:text-[#cfa643] flex items-center justify-between"
                 >
