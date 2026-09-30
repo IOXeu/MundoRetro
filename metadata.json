@@ -1,0 +1,8 @@
+{
+  "name": "Mundo Retrô - Publicidade Anos 50 e 60",
+  "description": "Estúdio e dossiê histórico para criação de anúncios autênticos das décadas de 1950 e 1960 para Instagram e Facebook.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

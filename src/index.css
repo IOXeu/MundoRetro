@@ -1,0 +1,50 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-abril {
+    font-family: 'Abril Fatface', display, serif;
+  }
+  .font-alfa {
+    font-family: 'Alfa Slab One', display, cursive;
+  }
+  .font-shrikhand {
+    font-family: 'Shrikhand', cursive;
+  }
+  .font-playfair {
+    font-family: 'Playfair Display', serif;
+  }
+  .font-dmserif {
+    font-family: 'DM Serif Display', serif;
+  }
+  .font-cinzel {
+    font-family: 'Cinzel', serif;
+  }
+  .font-satisfy {
+    font-family: 'Satisfy', cursive;
+  }
+  .font-caveat {
+    font-family: 'Caveat', cursive;
+  }
+  .font-outfit {
+    font-family: 'Outfit', sans-serif;
+  }
+  
+  /* Vintage Halftone Dot Screen */
+  .vintage-halftone {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.12) 1px, transparent 1px);
+    background-size: 4px 4px;
+  }
+
+  .vintage-halftone-dense {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.18) 1.5px, transparent 1.5px);
+    background-size: 3px 3px;
+  }
+
+  /* Paper texture grain simulator */
+  .retro-paper-noise {
+    background-color: #f7f2e7;
+    background-image: radial-gradient(#d3c6ab 0.75px, transparent 0.75px), radial-gradient(#d3c6ab 0.75px, #f7f2e7 0.75px);
+    background-size: 12px 12px;
+    background-position: 0 0, 6px 6px;
+  }
+}
